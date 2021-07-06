@@ -56,7 +56,7 @@ ssh localhost
 '''
 
 ###### 为方便每次登录不输入密码，配置成SSH无密码登陆：
-首先回到终端窗口，使用ssh-keygen 生成密钥，并将密钥加入到授权中：
+###### 首先回到终端窗口，使用ssh-keygen 生成密钥，并将密钥加入到授权中：
 
 '''
 exit                           # 退出刚才的 ssh localhost
@@ -130,57 +130,81 @@ java -version
 
 #### （2）第2种安装JDK方式：
 安装好 OpenJDK 
+
+'''
 sudo apt-get install openjdk-7-jre openjdk-7-jdk
+'''
 
-找到相应的安装路径，这个路径是用于配置 JAVA_HOME 环境变量的
+找到相应的安装路径，这个路径是用于配置 JAVA_HOME 环境变量的:
+
+'''
 dpkg -L openjdk-7-jdk | grep '/bin/javac'
-
+'''
 
 该命令会输出一个路径，除去路径末尾的 “/bin/javac”，剩下的就是正确的路径了。如输出路径为 /usr/lib/jvm/java-7-openjdk-amd64/bin/javac，则我们需要的路径为 /usr/lib/jvm/java-7-openjdk-amd64。
+
 接着需要配置一下 JAVA_HOME 环境变量，为方便，我们在 ~/.bashrc 中进行设置:
 
+'''
 vim ~/.bashrc
+'''
 
 在文件最前面添加如下单独一行（注意 = 号前后不能有空格），将“JDK安装路径”改为上述命令得到的路径，并保存：
 
+'''
 export JAVA_HOME=JDK安装路径
+'''
 
 接着还需要让该环境变量生效，执行如下代码：
 
+'''
 source ~/.bashrc    # 使变量设置生效
+'''
 
 设置好后我们来检验一下是否设置正确：
 
+'''
 echo $JAVA_HOME     # 检验变量值
 java -version
 $JAVA_HOME/bin/java -version  # 与直接执行 java -version 一样
+'''
 
 如果设置正确的话，$JAVA_HOME/bin/java -version
 这样，Hadoop 所需的 Java 运行环境就安装好了。
 
 
-（3）第3种安装JDK方式
+#### （3）第3种安装JDK方式
+
 根据大量电脑安装Java环境的情况我们发现，部分电脑按照上述的第一种安装方式会出现安装失败的情况，这时，可以采用这里介绍的另外一种安装方式，命令如下：
 
+'''
 sudo apt-get install default-jre default-jdk
-Shell 命令
+'''
+
 上述安装过程需要访问网络下载相关文件，请保持联网状态。安装结束以后，需要配置JAVA_HOME环境变量，请在Linux终端中输入下面命令打开当前登录用户的环境变量配置文件.bashrc：
 
+'''
 vim ~/.bashrc
-Shell 命令
+'''
+
 在文件最前面添加如下单独一行（注意，等号“=”前后不能有空格），然后保存退出：
 
 export JAVA_HOME=/usr/lib/jvm/default-java
+
 接下来，要让环境变量立即生效，请执行如下代码：
 
+'''
 source ~/.bashrc    # 使变量设置生效
-Shell 命令
+'''
+
 执行上述命令后，可以检验一下是否设置正确：
 
+'''
 echo $JAVA_HOME     # 检验变量值
 java -version
 $JAVA_HOME/bin/java -version  # 与直接执行java -version一样
-Shell 命令
+'''
+
 至此，就成功安装了Java环境。下面就可以进入Hadoop的安装。
 
 
