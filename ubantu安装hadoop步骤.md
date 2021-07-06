@@ -30,8 +30,10 @@ sudo passwd hadoop
 sudo apt-get update
 '''
 
-#######  ADDITION 更改软件源 ADDITION
+####### ADDITION 更改软件源 ADDITION
+
 若出现 “Hash校验和不符” 的提示，可通过更改软件源来解决。操作步骤：
+
 【系统设置】--【软件和更新】--【下载自】--【其他节点】--mirrors.aliyun.com】--【选择服务器】
 -- 提示列表信息过时，点击【重新载入】--。如果还是提示错误，请选择其他服务器节点如 mirrors.163.com 再次进行尝试。更新成功后，再次执行 sudo apt-get update 就正常了。
 
@@ -45,12 +47,14 @@ sudo apt-get install vim
 ### 三、安装SSH、配置SSH无密码登陆
 集群、单节点模式都需要用到 SSH 登陆
 Ubuntu 默认已安装了 SSH client，此外还需要安装 SSH server：
+
 '''
 sudo apt-get install openssh-server
 '''
 
 
 安装后，可以使用如下命令登陆本机：
+
 '''
 ssh localhost
 '''
@@ -58,12 +62,12 @@ ssh localhost
 ###### 为方便每次登录不输入密码，配置成SSH无密码登陆：
 ###### 首先回到终端窗口，使用ssh-keygen 生成密钥，并将密钥加入到授权中：
 
-'''
-exit                           # 退出刚才的 ssh localhost
-cd ~/.ssh/                     # 若没有该目录，请先执行一次ssh localhost
-ssh-keygen -t rsa              # 会有提示，都按回车就可以
-cat ./id_rsa.pub >> ./authorized_keys  # 加入授权
-'''
+    '''
+    exit                           # 退出刚才的 ssh localhost
+    cd ~/.ssh/                     # 若没有该目录，请先执行一次ssh localhost
+    ssh-keygen -t rsa              # 会有提示，都按回车就可以
+    cat ./id_rsa.pub >> ./authorized_keys  # 加入授权
+    '''
 
 
 
@@ -75,21 +79,22 @@ cat ./id_rsa.pub >> ./authorized_keys  # 加入授权
 A. 请把压缩格式的文件jdk-8u162-linux-x64.tar.gz下载到本地电脑，假设保存在“/home/linziyu/Downloads/”目录下。
 在Linux命令行界面中，执行如下Shell命令（注意：当前登录用户名是hadoop）：
 
-'''
-cd /usr/lib
-sudo mkdir jvm        #创建/usr/lib/jvm目录用来存放JDK文件
-cd ~                  #进入hadoop用户的主目录
-cd Downloads          #注意区分大小写字母，刚才已经通过FTP软件把JDK安装包jdk-8u162-linux-x64.tar.gz上传到该目录下
-sudo tar -zxvf ./jdk-8u162-linux-x64.tar.gz -C /usr/lib/jvm   
-                      #把JDK文件解压到/usr/lib/jvm目录下
-'''
+    '''
+    cd /usr/lib
+    sudo mkdir jvm        #创建/usr/lib/jvm目录用来存放JDK文件
+    cd ~                  #进入hadoop用户的主目录
+    cd Downloads          #注意区分大小写字母，刚才已经通过FTP软件把JDK安装包jdk-8u162-linux-x64.tar.gz上传到该目录下
+    sudo tar -zxvf ./jdk-8u162-linux-x64.tar.gz -C /usr/lib/jvm   
+                          #把JDK文件解压到/usr/lib/jvm目录下
+    '''
 
 B. JDK文件解压缩以后，可以执行如下命令到/usr/lib/jvm目录查看一下：
 
-'''
-cd /usr/lib/jvm
-ls
-'''
+    '''
+    cd /usr/lib/jvm
+    ls
+    '''
+    
 可以看到，在/usr/lib/jvm目录下有个jdk1.8.0_162目录。
 下面继续执行如下命令，设置环境变量：
 
@@ -101,12 +106,14 @@ vim ~/.bashrc
 
 
 C. 上面命令使用vim编辑器（查看vim编辑器使用方法）打开了hadoop这个用户的环境变量配置文件，请在这个文件的开头位置，添加如下几行内容：
-'''
-export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_162
-export JRE_HOME=${JAVA_HOME}/jre
-export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
-export PATH=${JAVA_HOME}/bin:$PATH
-'''
+
+    '''
+    export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_162
+    export JRE_HOME=${JAVA_HOME}/jre
+    export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+    export PATH=${JAVA_HOME}/bin:$PATH
+    '''
+    
 保存.bashrc文件并退出vim编辑器。
 然后，继续执行如下命令让.bashrc文件的配置立即生效：
 
@@ -122,11 +129,16 @@ java -version
 
 如果能够在屏幕上返回如下信息，则说明安装成功：
 
+'''
   hadoop@ubuntu:~$ java -version
+  
   java version "1.8.0_162"
+  
   Java(TM) SE Runtime Environment (build 1.8.0_162-b12)
-  Java HotSpot(TM) 64-Bit Server VM (build 25.162-b12, mixed mode)`````````````````````````````````
-
+  
+  Java HotSpot(TM) 64-Bit Server VM (build 25.162-b12, mixed mode)
+  
+'''
 
 #### （2）第2种安装JDK方式：
 安装好 OpenJDK 
